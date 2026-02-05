@@ -30,6 +30,8 @@ echo "> -starting reverb"
 php artisan reverb:start &
 REVERB_PID=$!
 
+php artisan queue:work redis &
+
 #    (sleep 5 &&
 php artisan octane:start -vv --port=9000 --server=swoole --host=0.0.0.0 --watch
 #    ) &
