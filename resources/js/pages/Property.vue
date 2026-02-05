@@ -8,6 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import {computed, CSSProperties, onMounted, reactive, ref, watch} from "vue";
 import axios from 'axios';
 import { LoaderCircle } from "lucide-vue-next";
+import {useSystemChannel} from "@/composables/useSystemChannel";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,6 +29,7 @@ const priceRanges = {
     min: 100000,
     max: 500000,
 }
+const { publicChannel: systemChannel } = useSystemChannel();
 
 interface Mark {
     style: CSSProperties
@@ -143,7 +145,17 @@ const loadMore = () => {
     }
 };
 
-onMounted(() => fetchProperties());
+onMounted(() => {
+    fetchProperties();
+
+    if (systemChannel.value) {
+        systemChannel.value.listenToAll((e, data) => {
+            if (e === '.PropertyCountUpdated') {
+                fetchProperties();
+            }
+        })
+    }
+});
 
 watch([() => filters.min_price, () => filters.max_price], ([newMin, newMax]) => {
     if (newMin !== null || newMax !== null) {

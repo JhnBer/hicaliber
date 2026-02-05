@@ -54,7 +54,7 @@ onMounted(() => {
     if (systemChannel.value) {
         systemChannel.value.listenToAll((e, data) => {
             if (e === '.PropertyCountUpdated') {
-                count.value = data.count
+                count.value = data.count;
             }
         })
     }
