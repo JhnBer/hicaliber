@@ -14,7 +14,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index as property} from '@/routes/property'
+import { index as property} from '@/routes/properties'
 import { type NavItem } from '@/types';
 import AppLogo from './AppLogo.vue';
 

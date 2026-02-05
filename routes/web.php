@@ -15,7 +15,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::prefix('property')->as('property.')->group(function () {
+Route::prefix('properties')->as('properties.')->group(function () {
     Route::get('', [\App\Http\Controllers\PropertyController::class, 'index'])->name('index');
 });
 
