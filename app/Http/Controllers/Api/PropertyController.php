@@ -23,6 +23,7 @@ class PropertyController extends Controller
         $filters = $request->validated();
 
         $properties = Property::search($filters)
+            ->orderBy('id')
             ->latest()
             ->paginate(15);
 
