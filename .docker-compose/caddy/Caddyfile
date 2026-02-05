@@ -1,3 +1,19 @@
+reverb.example.space {
+    tls internal
+
+
+    reverse_proxy app:8080 {
+        transport http {
+            versions h1.1
+        }
+
+        header_up Connection "Upgrade"
+        header_up Upgrade {http.request.header.Upgrade}
+        header_up Host {host}
+    }
+
+}
+
 vite.example.space {
     tls internal
     root * /var/www/public
@@ -38,6 +54,12 @@ example.space {
     request_body {
         max_size 100M
     }
+
+    header {
+            Content-Security-Policy "
+                connect-src 'self' http://app.testart.space https://app.testart.space ws://app.testart.space wss://app.testart.space ws://app.testart.space:5173 wss://app.testart.space:5173 ws://app.testart.space:8080 wss://app.testart.space:8080;
+            "
+        }
 
 
     handle {

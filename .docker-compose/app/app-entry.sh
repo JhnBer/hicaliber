@@ -26,17 +26,20 @@ fi
 pnpm run dev &
 NPM_PID=$!
 
-#    echo "> -starting reverb"
-#    php artisan reverb:start &
-#    REVERB_PID=$!
+echo "> -starting reverb"
+php artisan reverb:start &
+REVERB_PID=$!
 
 #    (sleep 5 &&
 php artisan octane:start -vv --port=9000 --server=swoole --host=0.0.0.0 --watch
 #    ) &
 OCTANE_PID=$!
 
-wait -n $NPM_PID $OCTANE_PID
+wait -n $NPM_PID $OCTANE_PID $REVERB_PID
 
-kill -TERM $NPM_PID $OCTANE_PID 2>/dev/null
-wait -n $NPM_PID $OCTANE_PID 2>/dev/null || true
+kill -TERM $NPM_PID $OCTANE_PID $REVERB_PID 2>/dev/null
+wait -n $NPM_PID $OCTANE_PID $REVERB_PID 2>/dev/null || true
+
+#echo "> Ready. All services are disabled."
+#tail -f /dev/null
 

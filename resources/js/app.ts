@@ -7,6 +7,12 @@ import { initializeTheme } from './composables/useAppearance';
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
+import { configureEcho } from '@laravel/echo-vue';
+
+configureEcho({
+    broadcaster: 'reverb',
+    wssPort: 443,
+});
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
