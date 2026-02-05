@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import {defineConfig, loadEnv} from 'vite';
+import run from "vite-plugin-run";
 
 export default defineConfig(({mode}) => {
     const env = loadEnv(mode, process.cwd());
@@ -39,6 +40,13 @@ export default defineConfig(({mode}) => {
                     },
                 },
             }),
+            run([
+                {
+                    name: "wayfinder",
+                    run: ["php", "artisan", "wayfinder:generate"],
+                    pattern: ["routes/**/*.php"],
+                }
+            ])
         ],
     }
 });
