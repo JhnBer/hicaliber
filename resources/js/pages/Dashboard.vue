@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import {Head, router} from '@inertiajs/vue3';
+import {Head} from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
-import { ref } from 'vue';
+import { onMounted, ref} from 'vue';
 import {seed, clean} from '@/routes/api/properties';
 import axios from "axios";
+import {useSystemChannel} from "@/composables/useSystemChannel";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,6 +22,8 @@ const props = defineProps<{
 
 const processing = ref<boolean>(false);
 
+const { publicChannel: systemChannel } = useSystemChannel();
+
 const handleSeed = async () => {
     if (processing.value) {
         return
@@ -29,11 +32,6 @@ const handleSeed = async () => {
     processing.value = true;
 
     await axios.post(seed().url);
-    await router.reload({
-        preserveScroll: true,
-        preserveState: true,
-        only: ['propertyCount'],
-    });
 
     processing.value = false;
 }
@@ -46,14 +44,21 @@ const pruneProperty = async () => {
     processing.value = true;
 
     await axios.post(clean().url);
-    await router.reload({
-        preserveScroll: true,
-        preserveState: true,
-        only: ['propertyCount'],
-    });
 
     processing.value = false
 }
+
+const count = ref<number>(props.propertyCount);
+
+onMounted(() => {
+    if (systemChannel.value) {
+        systemChannel.value.listenToAll((e, data) => {
+            if (e === '.PropertyCountUpdated') {
+                count.value = data.count
+            }
+        })
+    }
+})
 
 </script>
 
@@ -83,7 +88,7 @@ const pruneProperty = async () => {
                     <div class="size-full flex flex-col justify-center items-center gap-5">
                         <el-text>Property entries count: </el-text>
                         <div class=" z-1 flex p-2 justify-center bg-white dark:bg-neutral-800 border-1 border-gray-200 rounded-md w-min min-w-12">
-                            <el-text v-text="propertyCount" size="large" type="primary" />
+                            <el-text v-text="count" size="large" type="primary" />
                         </div>
                     </div>
                     <PlaceholderPattern class="absolute size-full" />

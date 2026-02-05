@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\PropertyCountUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchPropertyRequest;
 use App\Models\Property;
@@ -35,12 +36,16 @@ class PropertyController extends Controller
     {
         Property::factory(100)->create();
 
+        event(new PropertyCountUpdated(Property::query()->count()));
+
         return response()->noContent();
     }
 
     public function clean(Request $request): Response
     {
         Property::query()->truncate();
+
+        event(new PropertyCountUpdated(Property::query()->count()));
 
         return response()->noContent();
     }
