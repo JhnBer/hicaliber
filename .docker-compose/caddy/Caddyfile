@@ -1,0 +1,53 @@
+vite.example.space {
+    tls internal
+    root * /var/www/public
+    encode gzip
+
+    @allowed_origin {
+        header_regexp Origin ^https?://(app|www)?\.?example\.space$
+    }
+
+    header @allowed_origin {
+        Access-Control-Allow-Origin {http.request.header.Origin}
+        Access-Control-Allow-Methods "GET, OPTIONS"
+        Access-Control-Allow-Headers "*"
+        Access-Control-Allow-Credentials true
+    }
+
+    log {
+        output file /var/log/caddy/access.log
+    }
+
+    reverse_proxy app:5173 {
+        transport http {
+            read_timeout 120s
+            write_timeout 120s
+        }
+    }
+}
+
+example.space {
+    tls internal
+    root * /var/www/public
+    encode gzip
+
+    log {
+        output file /var/log/caddy/access.log
+    }
+
+    request_body {
+        max_size 100M
+    }
+
+    header {
+        Content-Security-Policy "
+            connect-src 'self' http://example.space https://example.space ws://example.space wss://example.space ws://example.space:5173 wss://example.space:5173 ws://example.space:8080 wss://example.space:8080;
+            img-src 'self' http://example.space https://example.space data: blob:;
+        "
+    }
+
+    handle {
+        reverse_proxy app:9000
+        file_server
+    }
+}
