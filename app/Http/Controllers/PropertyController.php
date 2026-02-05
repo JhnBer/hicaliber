@@ -8,6 +8,6 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        return inertia('Welcome');
+        return inertia('Property');
     }
 }

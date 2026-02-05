@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+import { ref } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -11,6 +12,17 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dashboard().url,
     },
 ];
+
+const handleSeed = () => {
+
+}
+
+const pruneProperty = () => {
+
+}
+
+const propertyNumber = ref<number>(0);
+
 </script>
 
 <template>
@@ -24,12 +36,25 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <div
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
-                    <PlaceholderPattern />
+                    <div class="size-full flex flex-col items-center gap-5 justify-center">
+                        <el-button  @click="handleSeed">
+                            Seed database
+                        </el-button>
+                        <div>
+                            <el-button @click="pruneProperty">Clean property table</el-button>
+                        </div>
+                    </div>
                 </div>
                 <div
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
-                    <PlaceholderPattern />
+                    <div class="size-full flex flex-col justify-center items-center gap-5">
+                        <el-text>Property entries count: </el-text>
+                        <div class=" z-1 flex p-2 justify-center bg-white dark:bg-neutral-800 border-1 border-gray-200 rounded-md w-min min-w-12">
+                            <el-text v-text="propertyNumber" size="large" type="primary" />
+                        </div>
+                    </div>
+                    <PlaceholderPattern class="absolute size-full" />
                 </div>
                 <div
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
