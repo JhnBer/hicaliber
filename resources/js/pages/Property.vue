@@ -102,7 +102,7 @@ const genColumns = () => {
 const columns = genColumns();
 
 const testRange = computed({
-    get: () => [filters.min_price || 10000, filters.max_price || priceRanges.max],
+    get: () => [filters.min_price || priceRanges.min, filters.max_price || priceRanges.max],
     set: (value) => {
         filters.min_price = value[0];
         filters.max_price = value[1] === priceRanges.max ? null : value[1];
