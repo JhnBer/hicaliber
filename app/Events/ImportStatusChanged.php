@@ -4,22 +4,20 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PropertyCountUpdated implements ShouldBroadcastNow
+class ImportStatusChanged implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public int $count)
+    public function __construct(public bool $active)
     {
-
+        //
     }
 
     /**
@@ -36,6 +34,6 @@ class PropertyCountUpdated implements ShouldBroadcastNow
 
     public function broadcastAs()
     {
-        return 'PropertyCountUpdated';
+        return 'ImportStatusChanged';
     }
 }

@@ -5,7 +5,7 @@ import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import { onMounted, ref} from 'vue';
-import {seed, clean} from '@/routes/api/properties';
+import {seed, clean, importMethod} from '@/routes/api/properties';
 import axios from "axios";
 import {useSystemChannel} from "@/composables/useSystemChannel";
 
@@ -18,6 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const props = defineProps<{
     propertyCount: number,
+    importActive: boolean,
 }>();
 
 const processing = ref<boolean>(false);
@@ -48,13 +49,30 @@ const pruneProperty = async () => {
     processing.value = false
 }
 
+const handleImport = async () => {
+    if (processing.value) {
+        return
+    }
+
+    processing.value = true;
+
+    await axios.post(importMethod().url);
+
+    processing.value = false;
+}
+
 const count = ref<number>(props.propertyCount);
+const canImport = ref<boolean>(!props.importActive)
 
 onMounted(() => {
     if (systemChannel.value) {
         systemChannel.value.listenToAll((e, data) => {
             if (e === '.PropertyCountUpdated') {
                 count.value = data.count;
+            }
+
+            if (e === '.ImportStatusChanged') {
+                canImport.value = !data.active;
             }
         })
     }
@@ -73,12 +91,19 @@ onMounted(() => {
                 <div
                     class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
                 >
-                    <div class="size-full flex flex-col items-center gap-5 justify-center">
-                        <el-button  @click="handleSeed" :disabled="processing">
-                            Seed database
-                        </el-button>
+                    <div class="size-full flex flex-col gap-5 justify-center pl-10">
                         <div>
-                            <el-button @click="pruneProperty" :disabled="processing">Clean property table</el-button>
+                            <el-button @click="handleSeed" :disabled="processing || !canImport">
+                                Seed database
+                            </el-button>
+                        </div>
+                        <div>
+                            <el-button @click="handleImport" :disabled="processing || !canImport">
+                                Import example
+                            </el-button>
+                        </div>
+                        <div>
+                            <el-button @click="pruneProperty" :disabled="processing || !canImport">Clean property table</el-button>
                         </div>
                     </div>
                 </div>
@@ -102,6 +127,13 @@ onMounted(() => {
             <div
                 class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
             >
+                <div class="size-full p-5">
+                    Click "seed database" to generate 100 random properties.
+                    <br>
+                    Click "clean property table" to clear property table.
+                    <br>
+                    Both actions trigger an event that updates the property counter and the search table data.
+                </div>
                 <PlaceholderPattern />
             </div>
         </div>

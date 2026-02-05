@@ -13,6 +13,7 @@ Route::get('/', function () {
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard', [
         'propertyCount' => \App\Models\Property::query()->count(),
+        'importActive' => Illuminate\Support\Facades\Cache::get('properties_import', false),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

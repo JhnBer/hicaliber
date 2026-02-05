@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Events\PropertyCountUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchPropertyRequest;
+use App\Jobs\ProcessExamplePropertyDataJob;
 use App\Models\Property;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -47,6 +48,12 @@ class PropertyController extends Controller
 
         event(new PropertyCountUpdated(Property::query()->count()));
 
+        return response()->noContent();
+    }
+
+    public function import(Request $request): Response
+    {
+        ProcessExamplePropertyDataJob::dispatch()->onConnection('redis');
         return response()->noContent();
     }
 
