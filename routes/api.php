@@ -10,7 +10,9 @@ Route::as('api.')->middleware('auth:sanctum')->group(function () {
     })->name('user');
 
     Route::prefix('properties')->as('properties.')->group(function () {
-        Route::get('/search', [\App\Http\Controllers\Api\PropertyController::class, 'search'])->name('search');
+        Route::get('search', [\App\Http\Controllers\Api\PropertyController::class, 'search'])->name('search');
+        Route::post('seed', [\App\Http\Controllers\Api\PropertyController::class, 'seed'])->name('seed');
+        Route::post('clean', [\App\Http\Controllers\Api\PropertyController::class, 'clean'])->name('clean');
     });
 
 });

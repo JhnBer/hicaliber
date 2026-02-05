@@ -7,6 +7,7 @@ use App\Http\Requests\SearchPropertyRequest;
 use App\Models\Property;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PropertyController extends Controller
 {
@@ -28,6 +29,20 @@ class PropertyController extends Controller
             ->paginate(15);
 
         return response()->json($properties);
+    }
+
+    public function seed(Request $request): Response
+    {
+        Property::factory(100)->create();
+
+        return response()->noContent();
+    }
+
+    public function clean(Request $request): Response
+    {
+        Property::query()->truncate();
+
+        return response()->noContent();
     }
 
     /**
