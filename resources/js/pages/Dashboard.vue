@@ -57,8 +57,6 @@ const handleImport = async () => {
     processing.value = true;
 
     await axios.post(importMethod().url);
-
-    processing.value = false;
 }
 
 const count = ref<number>(props.propertyCount);
@@ -73,6 +71,10 @@ onMounted(() => {
 
             if (e === '.ImportStatusChanged') {
                 canImport.value = !data.active;
+
+                if (!data.active) {
+                    processing.value = false;
+                }
             }
         })
     }
