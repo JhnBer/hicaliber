@@ -1,5 +1,5 @@
+import type {Channel} from "laravel-echo";
 import {ref} from 'vue';
-import {Channel} from "laravel-echo";
 
 const publicChannel = ref<Channel | null>(null);
 

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {Head} from '@inertiajs/vue3';
+import axios from "axios";
+import { onMounted, ref} from 'vue';
+import {useSystemChannel} from "@/composables/useSystemChannel";
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
+import {seed, clean, importMethod} from '@/routes/api/properties';
 import { type BreadcrumbItem } from '@/types';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
-import { onMounted, ref} from 'vue';
-import {seed, clean, importMethod} from '@/routes/api/properties';
-import axios from "axios";
-import {useSystemChannel} from "@/composables/useSystemChannel";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -115,7 +115,7 @@ onMounted(() => {
                     <div class="size-full flex flex-col justify-center items-center gap-5">
                         <el-text>Property entries count: </el-text>
                         <div class=" z-1 flex p-2 justify-center bg-white dark:bg-neutral-800 border-1 border-gray-200 rounded-md w-min min-w-12">
-                            <el-text v-text="count" size="large" type="primary" />
+                            <el-text size="large" type="primary">{{ count }}</el-text>
                         </div>
                     </div>
                     <PlaceholderPattern class="absolute size-full" />

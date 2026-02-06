@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import {useEchoPublic} from "@laravel/echo-vue";
+import {onMounted} from "vue";
+import {useSystemChannel} from "@/composables/useSystemChannel";
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue';
 import type { BreadcrumbItem } from '@/types';
-import {onMounted, provide} from "vue";
-import {useEchoPublic} from "@laravel/echo-vue";
-import {useSystemChannel} from "@/composables/useSystemChannel";
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];

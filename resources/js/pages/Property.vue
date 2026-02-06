@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import {Head} from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { dashboard } from '@/routes';
-import { index as property } from '@/routes/properties';
-import { search } from '@/routes/api/properties';
-import { type BreadcrumbItem } from '@/types';
-import {computed, CSSProperties, onMounted, reactive, ref, watch} from "vue";
 import axios from 'axios';
 import { LoaderCircle } from "lucide-vue-next";
+import type { CSSProperties} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import {useSystemChannel} from "@/composables/useSystemChannel";
+import AppLayout from '@/layouts/AppLayout.vue';
+import { dashboard } from '@/routes';
+import { search } from '@/routes/api/properties';
+import { index as property } from '@/routes/properties';
+import { type BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -149,7 +150,7 @@ onMounted(() => {
     fetchProperties();
 
     if (systemChannel.value) {
-        systemChannel.value.listenToAll((e, data) => {
+        systemChannel.value.listenToAll((e) => {
             if (e === '.PropertyCountUpdated') {
                 fetchProperties();
             }

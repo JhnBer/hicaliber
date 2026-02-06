@@ -1,13 +1,13 @@
 import { createInertiaApp } from '@inertiajs/vue3';
+import { configureEcho } from '@laravel/echo-vue';
+import ElementPlus from 'element-plus';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import '../css/app.css';
 import { initializeTheme } from './composables/useAppearance';
-import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-import { configureEcho } from '@laravel/echo-vue';
 
 configureEcho({
     broadcaster: 'reverb',
