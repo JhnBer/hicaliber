@@ -21,6 +21,22 @@ if [ -f "bootstrap/octane/octane-server-state.json" ]; then
     rm -f bootstrap/octane/octane-server-state.json
 fi
 
+if [ ! -d "vendor" ]; then
+    echo "> Installing PHP dependencies..."
+    composer install
+fi
+
+if [ ! -d "node_modules" ]; then
+    echo "> Installing Node dependencies..."
+    pnpm install
+fi
+
+if [ ! -f ".env" ]; then
+    echo "> Creating .env file..."
+    cp .env.example .env
+    php artisan key:generate
+fi
+
 #    sleep 2
 
 pnpm run dev &
