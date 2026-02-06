@@ -32,6 +32,11 @@ Once the containers are running, execute the migrations:
 docker compose exec app php artisan migrate
 ```
 
+You may need to restart the app container if it has crashed.
+```bash
+docker compose down app && docker compose up -d app
+```
+
 ### 4. Browser Setup
 
 **Important**: You'll need to allow untrusted certificates for the local domains:
