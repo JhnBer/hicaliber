@@ -29,8 +29,9 @@ fi
 if [ ! -d "node_modules" ]; then
     echo "> Installing Node dependencies..."
     pnpm install
-    php artisan key:generate
 fi
+
+php artisan key:generate --force
 
 sleep 1
 

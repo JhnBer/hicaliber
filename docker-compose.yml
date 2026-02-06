@@ -18,6 +18,11 @@ services:
     volumes:
       - ./:/var/www
       - ./.docker-compose/app/app-entry.sh:/usr/local/bin/app-entry
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "nc -z 127.0.0.1 8080" ]
+      interval: 10s
+      timeout: 3s
+      retries: 30
     networks:
       - hicaliber-network
   caddy:
@@ -35,7 +40,8 @@ services:
     networks:
       - hicaliber-network
     depends_on:
-      - app
+      app:
+        condition: service_healthy
   redis:
     image: redis:alpine
     container_name: hicaliber-redis

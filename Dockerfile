@@ -46,12 +46,5 @@ ENV PATH="/home/${user}/.composer/vendor/bin:${PATH}"
 
 RUN composer global require laravel/installer
 
-
-RUN if [ ! -f .env ]; then \
-    cp .env.example .env; \
-fi
-
-RUN pnpm install
-
 EXPOSE 9000
 
