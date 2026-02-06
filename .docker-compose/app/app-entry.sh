@@ -32,15 +32,16 @@ if [ ! -d "node_modules" ]; then
     php artisan key:generate
 fi
 
-#    sleep 2
+sleep 1
+
+echo "> -starting reverb"
+php artisan reverb:start &
+REVERB_PID=$!
 
 pnpm run build &
 #pnpm run dev &
 NPM_PID=$!
 
-echo "> -starting reverb"
-php artisan reverb:start &
-REVERB_PID=$!
 
 php artisan queue:work redis &
 
