@@ -13,6 +13,7 @@ Add these entries to your hosts file (`/etc/hosts` on macOS/Linux or `C:\Windows
 127.0.0.1 vite.example.space  
 127.0.0.1 reverb.example.space
 ```
+(vite for dev mode if needed)
 
 ### 2. Copy .env and start Docker Containers
 
@@ -43,7 +44,7 @@ docker compose down app && docker compose up -d app
 
 1. Open your browser and navigate to:
    - https://example.space
-   - https://vite.example.space
+   - https://vite.example.space (if dev mode used in app-entry.sh)
 
 2. When you see certificate warnings, click "Advanced" and "Proceed to example.space (unsafe)" or similar
 

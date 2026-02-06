@@ -35,6 +35,7 @@ fi
 #    sleep 2
 
 pnpm run build &
+#pnpm run dev &
 NPM_PID=$!
 
 echo "> -starting reverb"
