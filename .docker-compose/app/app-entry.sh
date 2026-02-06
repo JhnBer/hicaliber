@@ -29,17 +29,12 @@ fi
 if [ ! -d "node_modules" ]; then
     echo "> Installing Node dependencies..."
     pnpm install
-fi
-
-if [ ! -f ".env" ]; then
-    echo "> Creating .env file..."
-    cp .env.example .env
     php artisan key:generate
 fi
 
 #    sleep 2
 
-pnpm run dev &
+pnpm run build &
 NPM_PID=$!
 
 echo "> -starting reverb"
