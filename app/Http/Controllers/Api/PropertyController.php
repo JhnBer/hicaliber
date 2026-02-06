@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Data\PropertyDto;
 use App\Events\PropertyCountUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchPropertyRequest;
@@ -29,6 +30,11 @@ class PropertyController extends Controller
             ->orderBy('id')
             ->latest()
             ->paginate(15);
+
+
+        $properties->getCollection()->transform(function (Property $property) {
+            return PropertyDto::fromModel($property);
+        });
 
         return response()->json($properties);
     }
